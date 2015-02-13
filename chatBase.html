@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tuto</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/scriptIndex.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="wrapper">	
+		<h1>chatBase.class.php</h1>
+        <a href="index.html"><p>RETOUR</p></a>
+        <h2>Partie 1</h2>
+        <p>Ceci est une classe de base qui sera utilisé par ChatLine et ChatUser.</p>
+        <p>Ainsi que un constructeur qui sera utilisé par toutes les classes.</p>
+		<pre>
+    		<div class="code">
+/* Ceci est la classe de base, utilisé par ChatLine et ChatUser */
+
+class ChatBase{
+
+    // Ce constructeur est utilisé par toutes les classes:
+
+    public function __construct(array $options){
+
+        foreach($options as $k=>$v){
+            if(isset($this->$k)){
+                $this->$k = $v;
+            }
+        }
+    }
+}
+
+            </div>
+        </pre>
+
+	</div>
+</body>

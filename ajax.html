@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tuto</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/scriptIndex.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="wrapper">	
+		<h1>ajax.php</h1>
+        <a href="index.html"><p>RETOUR</p></a>
+        <h2>Partie 1</h2>
+        <p>Dans cette partie Vous pourrez entrer cos informations de connexion.</p>
+		<pre>
+    		<div class="code">
+
+/* Configuration de la base de donnée */
+
+$dbOptions = array(
+    'db_host' => 'localhost',
+    'db_user' => 'e1124889_chat',
+    'db_pass' => 'samouel1994',
+    'db_name' => 'e1124889_chatSystem'
+);
+
+
+error_reporting(E_ALL ^ E_NOTICE);
+require "classes/DB.class.php";
+require "classes/Chat.class.php";
+require "classes/ChatBase.class.php";
+require "classes/ChatLine.class.php";
+require "classes/ChatUser.class.php";
+
+session_name('webchat');
+session_start();
+
+if(get_magic_quotes_gpc()){
+
+    array_walk_recursive($_GET,create_function('&$v,$k','$v = stripslashes($v);'));
+    array_walk_recursive($_POST,create_function('&$v,$k','$v = stripslashes($v);'));
+}
+            </div>
+        </pre>
+        <h2>Partie 2</h2>
+        <p>Dans cette partie le fichier fera une tentative de se connecter à la DB.</p>
+        <pre>
+            <div class="code">
+try{
+
+    // Connection à la base de donnée
+    DB::init($dbOptions);
+
+    $response = array();
+
+    switch($_GET['action']){
+
+        case 'login':
+            $response = Chat::login($_POST['name'],$_POST['email']);
+        break;
+
+        case 'checkLogged':
+            $response = Chat::checkLogged();
+        break;
+
+        case 'logout':
+            $response = Chat::logout();
+        break;
+
+        case 'submitChat':
+            $response = Chat::submitChat($_POST['chatText']);
+        break;
+
+        case 'getUsers':
+            $response = Chat::getUsers();
+        break;
+
+        case 'getChats':
+            $response = Chat::getChats($_GET['lastID']);
+        break;
+
+        default:
+            throw new Exception('Wrong action');
+    }
+
+    echo json_encode($response);
+}
+catch(Exception $e){
+    die(json_encode(array('error' => $e->getMessage())));
+}
+            </div>
+        </pre>
+	</div>
+</body>

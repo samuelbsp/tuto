@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tuto</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/scriptIndex.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="wrapper">	
+		<h1>chatLine.class.php</h1>
+        <a href="index.html"><p>RETOUR</p></a>
+        <h2>Partie 1</h2>
+        <p>Ce fichier est utilisé pour les entrées de chat.</p>
+        <p>Il retourne l'objet MySqli de la classe DB.</p>
+		<pre>
+    		<div class="code">
+/* Chat line est utilisé pour les entré de chat */
+
+class ChatLine extends ChatBase{
+
+    protected $text = '', $author = '', $gravatar = '';
+
+    public function save(){
+        DB::query("
+            INSERT INTO webchat_lines (author, gravatar, text)
+            VALUES (
+                '".DB::esc($this->author)."',
+                '".DB::esc($this->gravatar)."',
+                '<p>".DB::esc($this->text)."</p>'
+        )");
+
+        // Retourne l'objet MySQLi de la class DB
+
+        return DB::getMySQLiObject();
+    }
+}
+            </div>
+        </pre>
+
+	</div>
+</body>

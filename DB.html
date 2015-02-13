@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tuto</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/scriptIndex.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="wrapper">	
+		<h1>DB.class.php</h1>
+        <a href="index.html"><p>RETOUR</p></a>
+        <h2>Partie 1</h2>
+        <p>Ce fichier prépare les infos pour la connexion à la base de donnée.</p>
+		<pre>
+    		<div class="code">
+class DB {
+    private static $instance;
+    private $MySQLi;
+
+    private function __construct(array $dbOptions){
+
+        $this->MySQLi = @ new mysqli(   $dbOptions['db_host'],
+                                        $dbOptions['db_user'],
+                                        $dbOptions['db_pass'],
+                                        $dbOptions['db_name'] );
+
+        if (mysqli_connect_errno()) {
+            throw new Exception('Database error.');
+        }
+
+        $this->MySQLi->set_charset("utf8");
+    }
+
+    public static function init(array $dbOptions){
+        if(self::$instance instanceof self){
+            return false;
+        }
+
+        self::$instance = new self($dbOptions);
+    }
+
+    public static function getMySQLiObject(){
+        return self::$instance->MySQLi;
+    }
+
+    public static function query($q){
+        return self::$instance->MySQLi->query($q);
+    }
+
+    public static function esc($str){
+        return self::$instance->MySQLi->real_escape_string(htmlspecialchars($str));
+    }
+}
+            </div>
+        </pre>
+
+	</div>
+</body>
