@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tuto</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="Styles/style.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="js/script.js" type="text/javascript"></script>
+<script src="js/jquery.smooth-scroll.js"></script>
+<script src="js/jquery.smooth-scroll.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">	
+		<h1>script.js</h1>
+        <a href="index.html"><span class="btn">Retour</span></a>
+        <ul class="listeEtape">
+            <a href="#etape1"><li>Étape 1</li></a>
+            <a href="#etape2"><li>Étape 2</li></a>
+            <a href="#etape3"><li>Étape 3</li></a>
+            <a href="#etape4"><li>Étape 4</li></a>
+            <a href="#etape5"><li>Étape 5</li></a>
+            <a href="#etape6"><li>Étape 6</li></a>
+            <a href="#etape7"><li>Étape 7</li></a>
+            <a href="#etape8"><li>Étape 8</li></a>
+        </ul>
+        <h2 id='etape1'>Partie <span class='green'>1</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>La première partie fait plusieurs choses. Elle commence par initialiser le chat. Ensuite data contient les variables qui seront utilisés. Par la suite Init associe les écouteurs d'évènements et débute les timers. Par la suite on associe à deux div les valeur par défaut du plugin jQuery. Ensuite on converti le div en chatLineHolder grâce au div préInstallé.</p>
+		<pre>
+        <div class="code">
+        <xmp>
+$(document).ready(function(){
+
+    chat.init();
+
+
+});
+
+var chat = {
+
+    // data contient les variables utiliser dans la class:
+
+    data : {
+        lastID         : 0,
+        noActivity    : 0
+    },
+
+    // Init associe les écouteur d'évènement et débute les timers
+
+    init : function(){
+
+        // Utilise le texte par défaut du Plugin Jquery:
+        $('#name').defaultText('Nickname');
+        $('#email').defaultText('Email (Gravatars are Enabled)');
+
+        // Converti le Div #chatLineHolder en jScrollPane, et sauvegarde le plugin dans le chat.data:
+
+
+        chat.data.jspAPI = $('#chatLineHolder').jScrollPane({
+            verticalDragMinHeight: 12,
+            verticalDragMaxHeight: 12
+        }).data('jsp');
+            </xmp>
+            </div>
+        </pre>
+        <h2 id='etape2'>Partie <span class="green">2</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>Dans cette partie on commence par utiliser la variable working pour prévenir les soumissions multiples. On connecte ensuite une personne au chat. On utilise ensuite une fonction qui sera défini plus bas. On envoi par le suite une nouvelle entrée au chat et on y assigne un ID temporaire.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// Utilise la variable Working pour prévenir les soumissions multiples:
+
+        var working = false;
+
+        // Connecte une personne au chat:
+
+        $('#loginForm').submit(function(){
+
+
+            if(working) return false;
+            working = true;
+
+            // Utilise la function tzPOST défini au bas:
+
+            $.tzPOST('login',$(this).serialize(),function(r){
+                working = false;
+
+                if(r.error){
+                    chat.displayError(r.error);
+                }
+                else chat.login(r.name,r.gravatar);
+            });
+
+            return false;
+        });
+                // Envoi une nouvelle entrée au chat:
+
+        $('#submitForm').submit(function(){
+
+            var text = $('#chatText').val();
+
+            if(text.length == 0){
+                return false;
+            }
+
+            if(working) return false;
+            working = true;
+
+            // Assigne un ID temporaire au chat:
+            var tempID = 't'+Math.round(Math.random()*1000000),
+                params = {
+                    id            : tempID,
+                    author        : chat.data.name,
+                    gravatar    : chat.data.gravatar,
+                    text        : text.replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                };                    
+                </xmp>
+            </div>
+        </pre>
+        <h2 id='etape3'>Partie <span class="green">3</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>On commence ici`par utiliser une méthode qui ajoute une entrée au chat sans attendre la réponse AJAX pour que tout s'affiche automatiquement. On utilise ensuite un tzPOST pour envoyer le chat avec une requête AJAX. Il y a ensuite une fonction pour LougOut l'utilisateur. Une autre ensuite pour vérifier si l'utilisateur est déjà connecté.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// Utilise la méthode addChatLine pour ajouter le chat a l'écran immédiatement sans attendre le réponse AJAX:
+
+            chat.addChatLine($.extend({},params));
+
+            // Utilise tzPOST pour envoyer le chat avec un requête AJAX:
+
+            $.tzPOST('submitChat',$(this).serialize(),function(r){
+                working = false;
+
+                $('#chatText').val('');
+                $('div.chat-'+tempID).remove();
+
+                params['id'] = r.insertID;
+                chat.addChatLine($.extend({},params));
+            });
+
+            return false;
+        });
+
+        // Log out l'utilisateur:
+
+        $('a.logoutButton').live('click',function(){
+
+            $('#chatTopBar > span').fadeOut(function(){
+                $(this).remove();
+                $('#loginPage').css('display','block');
+            });
+
+            $('#submitForm').fadeOut(function(){
+                $('#loginForm').fadeIn();
+            });
+
+            $.tzPOST('logout');
+
+            return false;
+        });
+
+        // Regarde si l'utilisateur est déjà connecté
+
+        $.tzGET('checkLogged',function(r){
+            if(r.logged){
+                chat.login(r.loggedAs.name,r.loggedAs.gravatar);
+                $('#loginPage').css('display','none');
+            }
+        });                    
+                </xmp>
+            </div>
+        </pre>
+        <h2 id='etape4'>Partie <span class="green">4</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>On commence tout d'abord par effectuer les fonctions timeout. On exécute ensuite une fonction qui s'occupe de cacher les informations de connexions. On fait par la suite un rendu HTML du message.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// Exécute les function timeout
+
+        (function getChatsTimeoutFunction(){
+            chat.getChats(getChatsTimeoutFunction);
+        })();
+
+        (function getUsersTimeoutFunction(){
+            chat.getUsers(getUsersTimeoutFunction);
+        })();
+
+    },
+
+    // La function cache les information de connexion 
+
+    login : function(name,gravatar){
+
+        chat.data.name = name;
+        chat.data.gravatar = gravatar;
+        $('#chatTopBar').html(chat.render('loginTopBar',chat.data));
+
+        $('#loginForm').fadeOut(function(){
+            $('#loginPage').css('display','none');
+            $('#submitForm').fadeIn();
+            $('#chatText').focus();
+        });
+
+    },
+
+    // Fait un rendu du HTML
+
+    render : function(template,params){
+
+        var arr = [];
+        switch(template){
+            case 'loginTopBar':
+                arr = [
+                '<span><img src="',params.gravatar,'" width="23" height="23" />',
+                '<span class="name">',params.name,
+                '</span><a href="" class="logoutButton rounded">Déconnexion</a></span>'];
+            break;
+
+            case 'chatLine':
+                arr = [
+                    '<div class="chat chat-',params.id,' rounded"><span class="gravatar">'+
+                    '<img src="',params.gravatar,'" width="23" height="23" '+
+                    'onload="this.style.visibility=\'visible\'" />',
+                    '</span><span class="author">',params.author,
+                    ':</span><span class="text">',params.text,
+                    '</span><span class="time">',params.time,'</span></div>'];
+            break;
+
+            case 'user':
+                arr = [
+                    '<div class="user" title="',params.name,'"><img src="',params.gravatar,
+                    '" width="30" height="30" onload="this.style.visibility=\'visible\'"'+
+                    ' /></div>'
+                ];
+            break;
+        }                    
+                </xmp>
+            </div>
+        </pre>
+        <h2 id='etape5'>Partie <span class="green">5</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>On fait tout d'abord ici un join du array. Par la suite, la fonction addChatLine ajoute une entrée chat à la page. Tout les temps sont affichés dans la section timezone du user. PHP retourne le temps mais rempli l'objet date seulement que plus tard. JavaScript converti le temps pour nous. Par la suite une fonction retire le message disant que c'est le premier message si nous écrivons le premier message. Une fonction est par la suite exécuter si ce n'est pas un chat temporaire. On exécute ensuite une fonction pour réinitialiser jScrollPane quand on ajoute du contenu.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// fait un join du array
+
+        return arr.join('');
+
+    },
+    // La function addChatLine ajoute un entrée chat à la page
+
+    addChatLine : function(params){
+
+        // Tout les temps sont affichés dans le user timezone
+
+        var d = new Date();
+        if(params.time) {
+
+            // PHP retourne le temps et remplira l'objet date plus tard. Javascript le converti pour nous
+
+            d.setUTCHours(params.time.hours,params.time.minutes);
+        }
+
+        params.time = (d.getHours() < 10 ? '0' : '' ) + d.getHours()+':'+
+                      (d.getMinutes() < 10 ? '0':'') + d.getMinutes();
+
+        var markup = chat.render('chatLine',params),
+            exists = $('#chatLineHolder .chat-'+params.id);
+
+        if(exists.length){
+            exists.remove();
+        }
+
+        if(!chat.data.lastID){
+            //Si c'est le premier message, retire le message disant qu'il n'y en as pas.
+
+            $('#chatLineHolder p').remove();
+        }
+
+        // Si ce n'est pas un chat temporaire.
+        if(params.id.toString().charAt(0) != 't'){
+            var previous = $('#chatLineHolder .chat-'+(+params.id - 1));
+            if(previous.length){
+                previous.after(markup);
+            }
+            else chat.data.jspAPI.getContentPane().append(markup);
+        }
+        else chat.data.jspAPI.getContentPane().append(markup);
+
+        // Reinitialise jScrollPane quand on ajoute du contenu.
+
+        chat.data.jspAPI.reinitialise();
+        chat.data.jspAPI.scrollToBottom(true);
+
+    },                    
+                </xmp>
+            </div>
+        </pre>
+        <h2 id='etape6'>Partie <span class="green">6</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>La méthode ici demande les derniers chats qui ont été ajoutés à la page.Si il n'y a pas d'entrée au chat on incrémente la variable noActivity. Elle défini par la suite un timeOut pour la prochaine requête basé sur l'activité qu'il y a sur le chat.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// Cette méthode demande les derniers chat et les ajoute à la page.
+
+    getChats : function(callback){
+        $.tzGET('getChats',{lastID: chat.data.lastID},function(r){
+
+            for(var i=0;i<r.chats.length;i++){
+                chat.addChatLine(r.chats[i]);
+            }
+
+            if(r.chats.length){
+                chat.data.noActivity = 0;
+                chat.data.lastID = r.chats[i-1].id;
+            }
+            else{
+                // Si il n'y a pas de chat reçu incrémente la variable noActivity
+
+                chat.data.noActivity++;
+            }
+
+            if(!chat.data.lastID){
+                chat.data.jspAPI.getContentPane().html('<p class="noChats">Pas de message ici.</p>');
+            }
+
+            // Set un timeOut pour la prochaine requête basé sur l'activité du chat.
+
+            var nextRequest = 1000;
+
+            // 2 secondes
+            if(chat.data.noActivity > 3){
+                nextRequest = 2000;
+            }
+
+            if(chat.data.noActivity > 10){
+                nextRequest = 5000;
+            }
+
+            // 15 secondes
+            if(chat.data.noActivity > 20){
+                nextRequest = 15000;
+            }
+
+            setTimeout(callback,nextRequest);
+        });
+    }, 
+                </xmp>
+            </div>
+        </pre>
+        <h2 id='etape7'>Partie <span class="green">7</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>On commence ici à faire une requête de la liste de tout les utilisateurs. Une méthode affiche par la suite différent message d'erreur si nécessaire.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// Fait une requête de la liste de tout les utilisateurs.
+
+    getUsers : function(callback){
+        $.tzGET('getUsers',function(r){
+
+            var users = [];
+
+            for(var i=0; i< r.users.length;i++){
+                if(r.users[i]){
+                    users.push(chat.render('user',r.users[i]));
+                }
+            }
+
+            var message = '';
+
+            if(r.total<1){
+                message = 'No one is online';
+            }
+            else {
+                message = r.total+' '+(r.total == 1 ? 'person':'people')+' online';
+            }
+
+            users.push('<p class="count">'+message+'</p>');
+
+            $('#chatUsers').html(users.join(''));
+
+            setTimeout(callback,15000);
+        });
+    },
+
+        // Cette méthode affiche un message d'erreur dans le haut de la page:
+
+    displayError : function(msg){
+        var elem = $('<div>',{
+            id        : 'chatErrorMessage',
+            html    : msg
+        });
+
+        elem.click(function(){
+            $(this).fadeOut(function(){
+                $(this).remove();
+            });
+        });
+
+        setTimeout(function(){
+            elem.click();
+        },5000);
+
+        elem.hide().appendTo('body').slideDown();
+    }
+};                    
+                </xmp>
+            </div>
+        </pre>
+        <h2 id='etape8'>Partie <span class="green">8</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>On exécute par la suite une function POST GET pour récupérer et envoyer les messages. Une méthode jQuery est par la suite exécuté pour créer des placeHolder par défaut.</p>
+        <pre>
+            <div class="code">
+                <xmp>
+// Méthode POST et GET
+
+$.tzPOST = function(action,data,callback){
+    $.post('php/ajax.php?action='+action,data,callback,'json');
+}
+
+$.tzGET = function(action,data,callback){
+    $.get('php/ajax.php?action='+action,data,callback,'json');
+}
+
+// Méthode jQuery pour des textes placeHolder:
+
+$.fn.defaultText = function(value){
+
+    var element = this.eq(0);
+    element.data('defaultText',value);
+
+    element.focus(function(){
+        if(element.val() == value){
+            element.val('').removeClass('defaultText');
+        }
+    }).blur(function(){
+        if(element.val() == '' || element.val() == value){
+            element.addClass('defaultText').val(value);
+        }
+    });
+
+    return element.blur();
+}                    
+                </xmp>
+            </div>
+        </pre>                                                                                           
+
+	</div>
+</body>

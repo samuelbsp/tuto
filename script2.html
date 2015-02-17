@@ -12,31 +12,21 @@
 </head>
 <body>
 	<div id="wrapper">	
-		<h1>chatBase.class.php</h1>
+		<h1>script2.js</h1>
         <a href="index.html"><span class="btn">Retour</span></a>
         <h2>Partie <span class='green'>1</span></h2>
-        <p>Ceci est une classe de base qui sera utilisé par ChatLine et ChatUser.</p>
-        <p>Ainsi que un constructeur qui sera utilisé par toutes les classes.</p>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
+        <p>Cette partie est tout simplement utile à redimensionner la grandeur de la fenêtre en fonction de l'écran de l'utilisateur.</p>
 		<pre>
-    		<div class="code">
-/* Ceci est la classe de base, utilisé par ChatLine et ChatUser */
-
-class ChatBase{
-
-    // Ce constructeur est utilisé par toutes les classes:
-
-    public function __construct(array $options){
-
-        foreach($options as $k=>$v){
-            if(isset($this->$k)){
-                $this->$k = $v;
-            }
-        }
-    }
-}
-
+        <div class="code">
+        <xmp>
+$(document).ready(function(){
+    var hauteur = window.innerHeight;
+    $('#chatLineHolder').css('height',hauteur-130);
+    $('#chatUsers').css('min-height',hauteur-10);
+});
+            </xmp>
             </div>
-        </pre>
-
+        </pre>    
 	</div>
 </body>

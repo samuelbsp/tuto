@@ -4,22 +4,38 @@
 <title>Tuto</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="Styles/style.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
-<script src="js/scriptIndex.js" type="text/javascript"></script>
+<script src="js/script.js" type="text/javascript"></script>
+<script src="js/jquery.smooth-scroll.js"></script>
+<script src="js/jquery.smooth-scroll.min.js"></script>
 </head>
 <body>
 	<div id="wrapper">	
 		<h1>Tutoriel Système messagerie Ajax</h1>
 		<p>J'expliquerai ici étape par étape comment créer un système de messagerie instantané en Ajax.</p>
 		<p>Il est nécessaire d'avoir quelques base en HTML/PHP/AJAX ainsi que d'être capable de toucher un peu à une base de donnée pour bien comprendre le tutoriel, mais tout sera très bien expliqué étape par étape.</p>
-		<h2>Étape 1</h2>
-		<a href="">FICHIER DE DÉPART</a>
+        <a href="download/chatSystemDepart.zip" target='_blank'><span class="btn">Télécharger fichier départ</span></a>
+        <a href="download/chatSystemFinal.zip" target='_blank'><span class="btn">Télécharger fichier final</span></a>
+        <ul class="listeEtape">
+            <a href="#etape1"><li>Étape 1</li></a>
+            <a href="#etape2"><li>Étape 2</li></a>
+            <a href="#etape3"><li>Étape 3</li></a>
+            <a href="#etape4"><li>Étape 4</li></a>
+            <a href="#etape5"><li>Étape 5</li></a>
+            <a href="#etape6"><li>Étape 6</li></a>
+            <a href="#etape7"><li>Étape 7</li></a>
+            <a href="#etape8"><li>Étape 8</li></a>
+        </ul>
+		<h2 id='etape1'>Étape <span class='green'>1</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Vous pouvez tout d'abord récupérer le fichier de départ avec tout les fichiers nécessaire dans la bonne hiérarchie. Voici une image du dossier complet.</p>
 		<img src="Styles/Images/hierarchie1.png" alt="">
 		<p>Le dossier css contient seulement deux fichiers css vide. Le dossier img est vide. Le dossier JS contient un fichier Script vide ainsi que un plugin nécessaire pour le système. Le dossier php est le plus remplis. Il contient un fichier ajax.php vide ainsi que un dossier contenant 5 fichiers PHP vide.</p>
-		<p>Voici le dossier contenu dans le dossier PHP.</p>
+		<p>Voici les fichiers contenus dans le dossier PHP.</p>
 		<img src="Styles/Images/hierarchie2.png" alt="">
-		<h2>Étape 2</h2>
+		<h2 id='etape2'>Étape <span class='green'>2</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Nous allons commencer par remplir le fichier HTML 'ajax-chat.html' comme suit:</p>
 		<pre>
 		<div class="code">
@@ -79,7 +95,8 @@
 		</xmp>
 		</div>
 		</pre>
-		<h2>Étape 3</h2>
+		<h2 id='etape3'>Étape <span class='green'>3</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Nous allons maintenant nous occuper des deux fichiers CSS relié au HTML</p>
 		<p>Commencons par 'page.css' :</p>
 		<pre>
@@ -473,7 +490,8 @@ body{
 		</pre>
 		<p>Vous devriez maintenant avoir une page semblable à ça :</p>
 		<img src="Styles/Images/htmlEnProgres1.png" alt="">
-		<h2>Étape 4</h2>
+		<h2 id='etape4'>Étape <span class='green'>4</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Nous allons maintenant créer la base de donnée.</p>
 		<p>Si vous utilisez cPanel l'interface auras l'aire de ceci :</p>
 		<img src="Styles/Images/cpanel.png" alt="">
@@ -496,7 +514,8 @@ body{
 		<p>Pour vous facilitez la vie j'ai créer un fichier pour construire automatiquement les tables nécessaires. Vous n'avez qu'à appuyer sur le bouton importer et sélectionner le fichier tables.sql à la racine du dossier de départ.</p>
 		<img src="Styles/Images/btnImporter.png" alt="">
 		<img src="Styles/Images/tableSql.png" alt="">
-		<h2>Étape 5</h2>
+		<h2 id='etape5'>Étape <span class='green'>5</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Nous allons maintenant commencer à remplir les fichiers PHP</p>
 		<p>Si vous voulez des explications étape par étape de chaque fichier PHP vous pouvez appuyez sur le lien du fichier que vous voulez voir ici :</p>
 		<ul>
@@ -855,12 +874,13 @@ class DB {
 		</xmp>
 		</div>
 		</pre>
-		<h2>Étape 6</h2>
+		<h2 id='etape6'>Étape <span class='green'>6</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Nous allons maintenant remplir les deux fichiers JavaScript</p>
 		<p>Comme pour l'étape précédente si vous voulez des instructions détaillés de chaque étape du fichier vous pouvez appuyer sur les liens ci-dessous :</p>
 		<ul>
-			<a href=""><li>script.js</li></a>
-			<a href=""><li>script2.js</li></a>
+			<a href="script.html"><li>script.js</li></a>
+			<a href="script2.html"><li>script2.js</li></a>
 		</ul>
 		<p>Sinon voici le code complet pour les deux fichiers :</p>
 		<p>'script.js' :</p>
@@ -1244,7 +1264,8 @@ $(document).ready(function(){
 		</xmp>
 		</div>
 		</pre>
-		<h2>Étape 7</h2>
+		<h2 id='etape7'>Étape <span class='green'>7</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Vous devez maintenant retourner dans le fichier ajax.php pour entrer les informations de votre base de données.</p>
 		<p>Au tout début du fichier vous devriez avoir les lignes de code suivante:</p>
 		<pre>
@@ -1263,7 +1284,8 @@ $dbOptions = array(
 		</pre>
 		<p>Vous n'avez qu'à modifier 'Votre Host' pour le nom de votre Host qui est normalement : localhost. Vous devez modifier le 'Votre utilisateur' pour le nom d'utilisateur crée plus tôt. Vous devez modifier 'Votre mot de passe utilisateur' pour le mot de passe utilisateur crée plus tôt. Finalement vous devez modifier 'Votre nom de base de donnée' pour le nom de la base de donnée crée plus tôt.</p>		
 
-		<h2>Étape 8</h2>
+		<h2 id='etape8'>Étape <span class='green'>8</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
 		<p>Et voila le tutoriel touche maintenant à sa fin. Il ne vous reste qu'à mettre en ligne ou sur un serveur local le dossier avec tout les fichiers et le système de messagerie va fonctionner.</p>
 		<p>Vous devez entrer un nom d'utilisateur et un adresse de messagerie pour vous connecter au système de messagerie.</p>
 		<p>Vous accéderez ensuite à une page de messagerie instantané qui devrait ressembler à ça si tout a été effectué correctement :</p>

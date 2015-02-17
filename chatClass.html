@@ -4,14 +4,23 @@
 <title>Tuto</title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="Styles/style.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
-<script src="js/scriptIndex.js" type="text/javascript"></script>
+<script src="js/script.js" type="text/javascript"></script>
+<script src="js/jquery.smooth-scroll.js"></script>
+<script src="js/jquery.smooth-scroll.min.js"></script>
 </head>
 <body>
 	<div id="wrapper">	
 		<h1>Chat.class.php</h1>
-        <a href="index.html"><p>RETOUR</p></a>
-        <h2>Partie 1</h2>
+        <a href="index.html"><span class="btn">Retour</span></a>
+        <ul class="listeEtape">
+            <a href="#etape1"><li>Étape 1</li></a>
+            <a href="#etape2"><li>Étape 2</li></a>
+            <a href="#etape3"><li>Étape 3</li></a>
+        </ul>
+        <h2 id='etape1'>Partie <span class="green">1</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
         <p>La première partie est une méthode statique utilisé par ajax.php</p>
         <p>Il prépare les gravatar. Retourne deux objets MySqli et il va chercher la liste des utilisateurs à l'aide d'une fonction.</p>
 		<pre>
@@ -197,7 +206,8 @@ class Chat{
         }
             </div>
         </pre>
-        <h2>Partie 2</h2>
+        <h2 id='etape2'>Partie <span class="green">2</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
         <p>Dans cette partie nous supprimons les chats et les utilisateurs après un certain temps.</p>
         <pre>
             <div class="code">
@@ -228,7 +238,8 @@ class Chat{
         $chats = array();      
             </div>
         </pre>
-        <h2>Partie 3</h2>
+        <h2 id='etape3'>Partie <span class="green">3</span></h2>
+        <a href="#wrapper"><span class="btn retourHaut">Retour Haut</span></a>
         <p>Dans cette partie on retourne le temps de la création du message et on va chercher les Gravatar.</p>
         <pre>
             <div class="code">

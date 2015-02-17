@@ -1,3 +1,6 @@
+$(document).ready(function() {
+	$('a').smoothScroll();
+});
 codifyMarkup(".code");
 function codifyMarkup(selector) {
   var classSel = document.querySelectorAll(selector);
